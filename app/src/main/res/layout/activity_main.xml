@@ -97,14 +97,13 @@
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
-                        <EditText
+                        <TextView
                             android:id="@+id/DOB_TextBox"
                             android:layout_width="150dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="5dp"
                             android:background="#BFBFBF"
                             android:ems="10"
-                            android:inputType="textPersonName"
                             android:padding="10dp" />
                     </LinearLayout>
 
