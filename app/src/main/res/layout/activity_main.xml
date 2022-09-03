@@ -116,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
-                    android:text="Gender"
+                    android:text="Gender *"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -177,7 +177,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="(or)  Spouse Name"
+                    android:text="Spouse Name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -196,7 +196,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="(or)  Mother Name"
+                    android:text="Mother Name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -275,7 +275,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Mobile Number"
+                    android:text="Mobile Number *"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -298,9 +298,21 @@
                     android:text="submit"
                     android:background="#5cdb5c"
                     android:layout_gravity="center"
-
-                    android:textAllCaps="true">
+                    android:textAllCaps="true"
+                    >
                 </androidx.appcompat.widget.AppCompatButton>
+
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="170dp"
+                    android:padding="10dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ripple"
+                    android:layout_gravity="center"
+                    android:textAllCaps="true"
+                    android:text="Submit"/>
+
 
             </LinearLayout>
         </LinearLayout>
