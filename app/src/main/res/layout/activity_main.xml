@@ -40,7 +40,6 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
-
                 <EditText
                     android:id="@+id/nameTextBox"
                     android:layout_width="match_parent"
@@ -287,25 +286,13 @@
                     android:ems="10"
                     android:padding="10dp" />
 
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button_submit"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="25dp"
-                    android:background="#5cdb5c"
-                    android:padding="10dp"
-                    android:text="submit"
-                    android:textAllCaps="true"></androidx.appcompat.widget.AppCompatButton>
-
                 <Button
                     android:id="@+id/button1"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="25dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/ripple"
                     android:padding="10dp"
                     android:text="Submit"
