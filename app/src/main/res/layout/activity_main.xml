@@ -11,7 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="40dp"
 
             android:orientation="vertical">
 
@@ -28,7 +28,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="40dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -43,7 +43,7 @@
                 <EditText
                     android:id="@+id/nameTextBox"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="55dp"
                     android:background="#BFBFBF"
                     android:ems="10"
                     android:inputType="textPersonName"
@@ -73,7 +73,7 @@
                         <EditText
                             android:id="@+id/age_TextBox"
                             android:layout_width="60dp"
-                            android:layout_height="45dp"
+                            android:layout_height="55dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginRight="30dp"
                             android:background="#BFBFBF"
@@ -100,7 +100,7 @@
                         <EditText
                             android:id="@+id/DOB_TextBox"
                             android:layout_width="150dp"
-                            android:layout_height="45dp"
+                            android:layout_height="55dp"
                             android:layout_marginTop="5dp"
                             android:background="#BFBFBF"
                             android:ems="10"
@@ -165,7 +165,7 @@
                 <EditText
                     android:id="@+id/father_TextBox"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="55dp"
                     android:background="#BFBFBF"
                     android:ems="10"
                     android:inputType="textPersonName"
@@ -184,7 +184,7 @@
                 <EditText
                     android:id="@+id/spouse_TextBox"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="55dp"
                     android:background="#BFBFBF"
                     android:ems="10"
                     android:inputType="textPersonName"
@@ -203,7 +203,7 @@
                 <EditText
                     android:id="@+id/mother_TextBox"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="55dp"
                     android:background="#BFBFBF"
                     android:ems="10"
                     android:inputType="textPersonName"
@@ -233,7 +233,7 @@
                         <EditText
                             android:id="@+id/street_TextBox"
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="55dp"
                             android:layout_marginRight="20dp"
                             android:background="#BFBFBF"
                             android:ems="10"
@@ -260,7 +260,7 @@
                         <EditText
                             android:id="@+id/city_TextBox"
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="55dp"
                             android:background="#BFBFBF"
                             android:ems="10"
                             android:inputType="textPersonName"
@@ -281,7 +281,7 @@
                 <EditText
                     android:id="@+id/number_TextBox"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="55dp"
                     android:background="#BFBFBF"
                     android:ems="10"
                     android:padding="10dp" />
@@ -291,7 +291,7 @@
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="50dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/ripple"
                     android:padding="10dp"
