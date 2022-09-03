@@ -1,23 +1,29 @@
 package org.hmispb.patientregistration
 
-import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.DatePicker
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import org.hmispb.patientregistration.databinding.ActivityMainBinding
 import org.hmispb.patientregistration.model.Data
 import org.hmispb.patientregistration.model.Patient
-import java.util.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
+    private lateinit var patientViewModel: PatientViewModel
+    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        patientViewModel = ViewModelProvider(this)[PatientViewModel::class.java]
+        sharedPreferences = getSharedPreferences("opdCounter", MODE_PRIVATE)
 
         val jsonString = resources!!.openRawResource(R.raw.data).bufferedReader().use { it.readText() }
         val data = Gson().fromJson(jsonString, Data::class.java)
@@ -66,10 +72,14 @@ class MainActivity : AppCompatActivity() {
                 if(binding.number.text.isNullOrEmpty())
                     binding.number.error = "Required"
 
+                Toast.makeText(this@MainActivity,"One or more fields are empty",Toast.LENGTH_SHORT).show()
+
                 return@setOnClickListener
             }
 
+            val id = sharedPreferences.getInt("id",0)
             val patient = Patient(
+                id = id,
                 patFirstName = binding.firstName.text.toString(),
                 patMiddleName = binding.middleName.text.toString(),
                 patLastName = binding.lastName.text.toString(),
@@ -80,13 +90,41 @@ class MainActivity : AppCompatActivity() {
                     3 -> "D"
                     else -> "Yr"
                 },
+                patGenderCodeId = when(binding.genderRadioGroup.checkedRadioButtonId) {
+                    R.id.male -> "M"
+                    R.id.female -> "F"
+                    else -> "T"
+                },
                 patGuardianName = binding.father.text.toString(),
                 patHusbandName = binding.spouse.text.toString(),
                 patMotherName = binding.mother.text.toString(),
                 patAddCountryCodeId = data.country[binding.countries.selectedItemPosition].countryCode,
                 patAddStateCodeId = data.state[binding.states.selectedItemPosition].stateCode,
-                patAddMobileNo = Integer.parseInt(binding.number.text.toString())
+                patAddMobileNo = java.lang.Long.parseLong(binding.number.text.toString())
             )
+            patientViewModel.insertPatient(patient)
+            sharedPreferences.edit()
+                .putInt("id",id+1)
+                .commit()
+
         }
+
+        patientViewModel.patientList.observe(this) { patients ->
+            Log.d("hello", patients.size.toString())
+            Log.d("hello",patients.toString())
+        }
+    }
+
+    private fun saveAllPatients() {
+        val patientList = patientViewModel.patientList.value
+        patientList?.let {
+            for(patient in patientList) {
+                patientViewModel.savePatient(patient)
+            }
+        }
+        patientViewModel.deleteAllPatients()
+        sharedPreferences.edit()
+            .putInt("id",0)
+            .commit()
     }
 }
