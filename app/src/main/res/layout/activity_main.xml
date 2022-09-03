@@ -12,7 +12,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="40dp"
-
             android:orientation="vertical">
 
             <TextView
@@ -21,6 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5sp"
                 android:gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:text="Patient Registration"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="40dp" />
@@ -40,15 +40,19 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
-                <EditText
-                    android:id="@+id/nameTextBox"
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:background="#BFBFBF"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-
-                    android:padding="10dp" />
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -70,16 +74,20 @@
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
-                        <EditText
-                            android:id="@+id/age_TextBox"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="60dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginRight="30dp"
-                            android:background="#BFBFBF"
-                            android:ems="10"
-                            android:inputType="textPersonName"
-                            android:padding="10dp" />
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/age"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:inputType="number"
+                                android:padding="10dp" />
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -97,14 +105,21 @@
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/DOB_TextBox"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="150dp"
                             android:layout_height="55dp"
                             android:layout_marginTop="5dp"
-                            android:background="#BFBFBF"
-                            android:ems="10"
-                            android:padding="10dp" />
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/dob"
+                                android:focusable="false"
+                                android:cursorVisible="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:inputType="textPersonName"
+                                android:padding="10dp" />
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -147,7 +162,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Other"
+                        android:text="Transgender"
                         android:textSize="16sp" />
                 </RadioGroup>
 
@@ -161,14 +176,18 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/father_TextBox"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:background="#BFBFBF"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/father"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/spouse_name"
@@ -180,14 +199,18 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/spouse_TextBox"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:background="#BFBFBF"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/spouse"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/mother_name"
@@ -199,14 +222,18 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/mother_TextBox"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:background="#BFBFBF"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/mother"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -216,6 +243,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
@@ -229,15 +257,19 @@
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
-                        <EditText
-                            android:id="@+id/street_TextBox"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="wrap_content"
                             android:layout_height="55dp"
-                            android:layout_marginRight="20dp"
-                            android:background="#BFBFBF"
-                            android:ems="10"
-                            android:inputType="textPersonName"
-                            android:padding="10dp" />
+                            android:layout_marginEnd="20dp"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/street"
+                                android:layout_width="200dp"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:inputType="textPersonName"
+                                android:padding="10dp" />
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -256,14 +288,18 @@
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
-                        <EditText
-                            android:id="@+id/city_TextBox"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="wrap_content"
                             android:layout_height="55dp"
-                            android:background="#BFBFBF"
-                            android:ems="10"
-                            android:inputType="textPersonName"
-                            android:padding="10dp" />
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/city"
+                                android:layout_width="200dp"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:inputType="textPersonName"
+                                android:padding="10dp" />
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -277,13 +313,18 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/number_TextBox"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:background="#BFBFBF"
-                    android:ems="10"
-                    android:padding="10dp" />
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/button1"
