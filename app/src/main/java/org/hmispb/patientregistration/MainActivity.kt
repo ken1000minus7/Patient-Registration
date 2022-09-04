@@ -3,8 +3,14 @@ package org.hmispb.patientregistration
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
@@ -22,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         patientViewModel = ViewModelProvider(this)[PatientViewModel::class.java]
         sharedPreferences = getSharedPreferences("opdCounter", MODE_PRIVATE)
 
@@ -115,16 +122,40 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveAllPatients() {
-        val patientList = patientViewModel.patientList.value
-        patientList?.let {
-            for(patient in patientList) {
-                patientViewModel.savePatient(patient)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.upload_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val view = LayoutInflater.from(this).inflate(R.layout.login_dialog,null,false)
+        val dialog = AlertDialog.Builder(this)
+            .setView(view)
+            .create()
+        dialog.setOnShowListener { dialogInterface ->
+            val username = dialog.findViewById<EditText>(R.id.username)
+            val password = dialog.findViewById<EditText>(R.id.password)
+            val upload = dialog.findViewById<Button>(R.id.upload)
+            upload?.setOnClickListener {
+                if(username?.text.toString().isEmpty() || password?.text.isNullOrEmpty()) {
+                    if(username?.text.toString().isEmpty())
+                        username?.error = "Required"
+                    if(password?.text.toString().isEmpty())
+                        password?.error = "Required"
+                    Toast.makeText(this@MainActivity,"One or more fields are empty",Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                patientViewModel.upload(username!!.text.toString(),password!!.text.toString())
+            }
+            patientViewModel.uploaded.observe(this@MainActivity) { uploaded ->
+                if(uploaded) {
+                    Toast.makeText(this@MainActivity,"Data successfully uploaded",Toast.LENGTH_SHORT).show()
+                    dialogInterface.cancel()
+                    patientViewModel.uploaded.value = false
+                }
             }
         }
-        patientViewModel.deleteAllPatients()
-        sharedPreferences.edit()
-            .putInt("id",0)
-            .commit()
+        dialog.show()
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -1,7 +1,10 @@
 package org.hmispb.patientregistration.room
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.gson.Gson
+import org.hmispb.patientregistration.model.LoginRequest
+import org.hmispb.patientregistration.model.LoginResponse
 import org.hmispb.patientregistration.model.Patient
 import org.hmispb.patientregistration.model.SavePatientRequest
 
@@ -23,10 +26,14 @@ class PatientRepositoryImpl(private val patientDao: PatientDao, private val pati
         patientDao.deleteAllPatients()
     }
 
-    override suspend fun savePatient(patient: Patient) {
+    override suspend fun savePatient(patient: Patient,response: LoginResponse) {
         val patientString = Gson().toJson(patient)
-        // TODO : hospitalCode and seatId unknown
-        val request = SavePatientRequest(0,0,patientString)
+        Log.d("yellow",patientString)
+        val request = SavePatientRequest(response.hospitalCode,response.UserName,patientString)
         patientApi.savePatient(request)
+    }
+
+    override suspend fun login(username: String, password: String): LoginResponse {
+        return patientApi.login(LoginRequest(username,password))
     }
 }
