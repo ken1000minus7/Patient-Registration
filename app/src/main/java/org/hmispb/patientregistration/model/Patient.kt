@@ -10,7 +10,7 @@ data class Patient(
     val patFirstName : String,
     val patMiddleName : String,
     val patLastName : String,
-    val isActualDob : Boolean = false,
+    val isActualDob : Int = 0,
     val patAgeId : Int,
     val patAgeUnitId : String,
     val patGenderCodeId : String,
