@@ -22,5 +22,5 @@ interface PatientDao {
     fun deleteAllPatients()
 
     @Query("SELECT * FROM patient WHERE crNo =:crNumber")
-    fun searchPatientByCRNumber(crNumber: String) : Patient?
+    suspend  fun searchPatientByCRNumber(crNumber: String) : Patient?
 }

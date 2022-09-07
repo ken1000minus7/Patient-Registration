@@ -17,5 +17,5 @@ interface PatientRepository {
 
     suspend fun login(username : String, password : String) : LoginResponse?
 
-    fun searchPatientByCRNumber(crNumber: String) : Patient?
+    suspend fun searchPatientByCRNumber(crNumber: String) : Patient?
 }

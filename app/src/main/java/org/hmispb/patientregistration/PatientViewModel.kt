@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PatientViewModel @Inject constructor(private val patientRepository: PatientRepository) : ViewModel() {
     var patientList = patientRepository.getAllPatients()
-    var uploaded : MutableLiveData<Boolean> = MutableLiveData(false)
+    var uploaded: MutableLiveData<Boolean> = MutableLiveData(false)
 
     fun insertPatient(patient: Patient) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -40,24 +40,32 @@ class PatientViewModel @Inject constructor(private val patientRepository: Patien
         }
     }
 
-    fun upload(username : String, password : String) {
+    fun upload(username: String, password: String) {
         viewModelScope.launch {
             try {
-                val response = patientRepository.login(username,password)
+                val response = patientRepository.login(username, password)
                 val patients = patientList.value ?: mutableListOf()
-                for(patient in patients) {
-                    if(response!=null) savePatient(patient, response.dataValue!![0][0], response.dataValue[0][2])
+                for (patient in patients) {
+                    if (response != null) savePatient(
+                        patient,
+                        response.dataValue!![0][0],
+                        response.dataValue[0][2]
+                    )
                     deletePatient(patient)
                 }
                 uploaded.value = true
-            } catch (e : Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
+    suspend fun searchPatientByCRNumber(crNumber: String): Boolean {
+        val person: Patient? = patientRepository.searchPatientByCRNumber(crNumber)
+        return (person == null)
+    }
 
-    suspend fun login(username : String, password : String) : LoginResponse? =
+    suspend fun login(username: String, password: String): LoginResponse? =
         patientRepository.login(username, password)
 
 }
