@@ -11,7 +11,9 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.hmispb.patientregistration.databinding.ActivityMainBinding
 
 @AndroidEntryPoint
@@ -59,13 +61,17 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity,"One or more fields are empty", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-                patientViewModel.upload(username!!.text.toString(),password!!.text.toString())
+                patientViewModel.patientList.observe(this@MainActivity) { patients ->
+                    patientViewModel.upload(username!!.text.toString(),password!!.text.toString(),patients)
+                }
             }
             patientViewModel.uploaded.observe(this@MainActivity) { uploaded ->
-                if(uploaded) {
-                    Toast.makeText(this@MainActivity,"Data successfully uploaded", Toast.LENGTH_SHORT).show()
-                    dialogInterface.cancel()
-                    patientViewModel.uploaded.value = false
+                lifecycleScope.launch {
+                    if(uploaded) {
+                        Toast.makeText(this@MainActivity,if(patientViewModel.containsNotUploaded()) "One or more entries were not uploaded" else "Data successfully uploaded", Toast.LENGTH_SHORT).show()
+                        dialogInterface.cancel()
+                        patientViewModel.uploaded.value = false
+                    }
                 }
             }
         }

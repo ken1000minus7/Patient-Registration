@@ -1,5 +1,6 @@
 package org.hmispb.patientregistration
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,10 @@ import javax.inject.Inject
 class PatientViewModel @Inject constructor(private val patientRepository: PatientRepository) : ViewModel() {
     var patientList = patientRepository.getAllPatients()
     var uploaded : MutableLiveData<Boolean> = MutableLiveData(false)
+
+    init {
+        Log.d("poppy",patientList.value.toString())
+    }
 
     fun insertPatient(patient: Patient) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -34,22 +39,28 @@ class PatientViewModel @Inject constructor(private val patientRepository: Patien
         }
     }
 
-    fun savePatient(patient: Patient, hospitalCode: String, userID: String) {
+    private fun savePatient(patient: Patient, hospitalCode: String, userID: String) {
         viewModelScope.launch {
             patientRepository.savePatient(patient, hospitalCode, userID)
         }
     }
 
-    fun upload(username : String, password : String) {
+    private fun setUploaded(crNo : String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            patientRepository.setUploaded(crNo)
+        }
+    }
+
+    fun upload(username : String, password : String,patients : List<Patient>) {
         viewModelScope.launch {
             try {
-                val response = patientRepository.login(username,password)
-                val patients = patientList.value ?: mutableListOf()
+                val response = login(username,password)
                 for(patient in patients) {
+                    Log.d("pop",patient.toString())
                     if(response!=null && !patient.isUploaded) {
                         try {
                             savePatient(patient, response.dataValue!![0][0], response.dataValue[0][2])
-                            patientRepository.setUploaded(patient.crNo)
+                            setUploaded(patient.crNo)
                         } catch (e : Exception) {
                             e.printStackTrace()
                         }
@@ -65,4 +76,7 @@ class PatientViewModel @Inject constructor(private val patientRepository: Patien
     suspend fun login(username : String, password : String) : LoginResponse? =
         patientRepository.login(username, password)
 
+    suspend fun containsNotUploaded() : Boolean {
+        return patientRepository.containsNotUploaded()
+    }
 }

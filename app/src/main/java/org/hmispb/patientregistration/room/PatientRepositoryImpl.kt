@@ -10,7 +10,7 @@ import org.hmispb.patientregistration.model.SavePatientRequest
 
 class PatientRepositoryImpl(private val patientDao: PatientDao, private val patientApi: PatientApi) : PatientRepository {
 
-    override fun insertPatient(patient: Patient) {
+    override suspend fun insertPatient(patient: Patient) {
         patientDao.insertPatient(patient)
     }
 
@@ -18,11 +18,11 @@ class PatientRepositoryImpl(private val patientDao: PatientDao, private val pati
         return patientDao.getAllPatients()
     }
 
-    override fun deletePatient(patient: Patient) {
+    override suspend fun deletePatient(patient: Patient) {
         patientDao.deletePatient(patient)
     }
 
-    override fun deleteAllPatients() {
+    override suspend fun deleteAllPatients() {
         patientDao.deleteAllPatients()
     }
 
@@ -42,7 +42,12 @@ class PatientRepositoryImpl(private val patientDao: PatientDao, private val pati
         return patientApi.login(LoginRequest(listOf(username, password)))
     }
 
-    override fun setUploaded(crNo: String) {
+    override suspend fun setUploaded(crNo: String) {
+        Log.d("crno",crNo)
         patientDao.setUploaded(crNo)
+    }
+
+    override suspend fun containsNotUploaded(): Boolean {
+        return patientDao.notUploadedCount()>0
     }
 }
