@@ -10,17 +10,23 @@ import org.hmispb.patientregistration.model.Patient
 @Dao
 interface PatientDao {
     @Insert
-    fun insertPatient(patient: Patient)
+    suspend fun insertPatient(patient: Patient)
 
     @Query("SELECT * FROM patient")
     fun getAllPatients() : LiveData<List<Patient>>
 
     @Delete
-    fun deletePatient(patient: Patient)
+    suspend fun deletePatient(patient: Patient)
 
     @Query("DELETE FROM patient")
-    fun deleteAllPatients()
+    suspend fun deleteAllPatients()
 
     @Query("SELECT * FROM patient WHERE crNo =:crNumber")
     suspend  fun searchPatientByCRNumber(crNumber: String) : Patient?
+
+    @Query("UPDATE patient SET isUploaded=1 WHERE crNo=:crNo")
+    suspend fun setUploaded(crNo : String)
+
+    @Query("SELECT count(*) FROM patient WHERE isUploaded=0")
+    suspend fun notUploadedCount() : Int
 }

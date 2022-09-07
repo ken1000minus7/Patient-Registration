@@ -6,15 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".ExistingUserActivity">
 
+    <TextView
+        android:id="@+id/tv_existing_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exisiting User Registration"
+        android:textSize="@dimen/_20ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="@dimen/_20sdp"
+        />
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_old_cr_number"
-        android:layout_width="@dimen/_100sdp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_existing_user_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_margin="@dimen/_20sdp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/cr_number"
