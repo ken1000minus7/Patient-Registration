@@ -29,15 +29,16 @@ class PatientRepositoryImpl(private val patientDao: PatientDao, private val pati
     override suspend fun savePatient(patient: Patient, hospitalCode: String, seatID: String) {
 
         val patientString = Gson().toJson(patient)
-        Log.d("yellow",patientString)
+        Log.d("yellow", patientString)
         val request = SavePatientRequest(
             hospitalCode = hospitalCode,
             seatId = seatID,
-        inputDataJson = patientString)
+            inputDataJson = patientString
+        )
         patientApi.savePatient(request)
     }
 
     override suspend fun login(username: String, password: String): LoginResponse? {
-        return patientApi.login(LoginRequest(listOf(username,password)))
+        return patientApi.login(LoginRequest(listOf(username, password)))
     }
 }
