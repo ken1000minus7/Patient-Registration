@@ -104,7 +104,7 @@ class NewPatientActivity : AppCompatActivity() {
             if(opdId.length==1) opdId = "0$opdId"
             if(opdId.length==2) opdId = "0$opdId"
 
-            val crStarting = sharedPreferences.getString(HOSPITAL_CODE,"")
+            val crStarting = loginPreferences.getString(HOSPITAL_CODE,"")
             val crMiddle = "${if(currentDate.day<10) "0" else ""}${currentDate.day}${if(currentDate.month<10) "0" else ""}${currentDate.month}${currentDate.year.toString().substring(2)}"
 
             val crNo = crStarting + crMiddle + opdId
