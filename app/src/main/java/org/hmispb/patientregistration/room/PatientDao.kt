@@ -20,4 +20,7 @@ interface PatientDao {
 
     @Query("DELETE FROM patient")
     fun deleteAllPatients()
+
+    @Query("UPDATE patient SET isUploaded=1 WHERE crNo=:crNo")
+    fun setUploaded(crNo : String)
 }

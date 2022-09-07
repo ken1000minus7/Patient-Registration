@@ -46,10 +46,16 @@ class PatientViewModel @Inject constructor(private val patientRepository: Patien
                 val response = patientRepository.login(username,password)
                 val patients = patientList.value ?: mutableListOf()
                 for(patient in patients) {
-                    if(response!=null) savePatient(patient, response.dataValue!![0][0], response.dataValue[0][2])
-                    deletePatient(patient)
+                    if(response!=null && !patient.isUploaded) {
+                        try {
+                            savePatient(patient, response.dataValue!![0][0], response.dataValue[0][2])
+                            patientRepository.setUploaded(patient.crNo)
+                        } catch (e : Exception) {
+                            e.printStackTrace()
+                        }
+                    }
                 }
-                uploaded.value = true
+                uploaded.postValue(true)
             } catch (e : Exception) {
                 e.printStackTrace()
             }

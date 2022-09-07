@@ -106,8 +106,11 @@ class NewPatientActivity : AppCompatActivity() {
             if(opdId.length==1) opdId = "0$opdId"
             if(opdId.length==2) opdId = "0$opdId"
 
-            val crMiddle = "${if(currentDate.day<10) "0" else ""}${currentDate.day}${if(currentDate.month<10) "0" else ""}${currentDate.month}${currentDate.year.toString().substring(2)}"
-
+            val currentMonth = currentDate.month+1
+            val currentYear = currentDate.year + 1900
+            val crMiddle = "${if(currentDate.date<10) "0" else ""}${currentDate.date}${if(currentMonth<10) "0" else ""}${currentMonth}${currentYear.toString().substring(2)}"
+            Log.d("idk",currentDate.date.toString() + " " + currentDate.month.toString())
+            Log.d("idk",currentDate.toString())
             val crNo = hospitalCode + crMiddle + opdId
 
             val patient = Patient(
@@ -171,42 +174,5 @@ class NewPatientActivity : AppCompatActivity() {
             Log.d("hello", patients.size.toString())
             Log.d("hello",patients.toString())
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.upload_menu,menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val view = LayoutInflater.from(this).inflate(R.layout.login_dialog,null,false)
-        val dialog = AlertDialog.Builder(this)
-            .setView(view)
-            .create()
-        dialog.setOnShowListener { dialogInterface ->
-            val username = dialog.findViewById<EditText>(R.id.username)
-            val password = dialog.findViewById<EditText>(R.id.password)
-            val upload = dialog.findViewById<Button>(R.id.upload)
-            upload?.setOnClickListener {
-                if(username?.text.toString().isEmpty() || password?.text.isNullOrEmpty()) {
-                    if(username?.text.toString().isEmpty())
-                        username?.error = "Required"
-                    if(password?.text.toString().isEmpty())
-                        password?.error = "Required"
-                    Toast.makeText(this@NewPatientActivity,"One or more fields are empty",Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-                patientViewModel.upload(username!!.text.toString(),password!!.text.toString())
-            }
-            patientViewModel.uploaded.observe(this@NewPatientActivity) { uploaded ->
-                if(uploaded) {
-                    Toast.makeText(this@NewPatientActivity,"Data successfully uploaded",Toast.LENGTH_SHORT).show()
-                    dialogInterface.cancel()
-                    patientViewModel.uploaded.value = false
-                }
-            }
-        }
-        dialog.show()
-        return super.onOptionsItemSelected(item)
     }
 }

@@ -23,49 +23,4 @@ class ExistingUserActivity : AppCompatActivity() {
         setContentView(binding.root)
         patientViewModel = ViewModelProvider(this)[PatientViewModel::class.java]
     }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.upload_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val view = LayoutInflater.from(this).inflate(R.layout.login_dialog, null, false)
-        val dialog = AlertDialog.Builder(this)
-            .setView(view)
-            .create()
-        dialog.setOnShowListener { dialogInterface ->
-            val username = dialog.findViewById<EditText>(R.id.username)
-            val password = dialog.findViewById<EditText>(R.id.password)
-            val upload = dialog.findViewById<Button>(R.id.upload)
-            upload?.setOnClickListener {
-                if (username?.text.toString().isEmpty() || password?.text.isNullOrEmpty()) {
-                    if (username?.text.toString().isEmpty())
-                        username?.error = "Required"
-                    if (password?.text.toString().isEmpty())
-                        password?.error = "Required"
-                    Toast.makeText(
-                        this@ExistingUserActivity,
-                        "One or more fields are empty",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-                patientViewModel.upload(username!!.text.toString(), password!!.text.toString())
-            }
-            patientViewModel.uploaded.observe(this@ExistingUserActivity) { uploaded ->
-                if (uploaded) {
-                    Toast.makeText(
-                        this@ExistingUserActivity,
-                        "Data successfully uploaded",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    dialogInterface.cancel()
-                    patientViewModel.uploaded.value = false
-                }
-            }
-        }
-        dialog.show()
-        return super.onOptionsItemSelected(item)
-    }
 }
