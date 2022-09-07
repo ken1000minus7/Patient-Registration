@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                     if(uploaded) {
                         Toast.makeText(this@MainActivity,if(patientViewModel.containsNotUploaded()) "One or more entries were not uploaded" else "Data successfully uploaded", Toast.LENGTH_SHORT).show()
                         dialogInterface.cancel()
-                        patientViewModel.uploaded.value = false
+                        patientViewModel.uploaded.postValue(false)
                     }
                 }
             }
