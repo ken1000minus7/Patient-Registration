@@ -13,7 +13,7 @@ interface PatientRepository {
 
     fun deleteAllPatients()
 
-    suspend fun savePatient(patient: Patient,response: LoginResponse)
+    suspend fun savePatient(patient: Patient,response: LoginResponse?)
 
-    suspend fun login(username : String, password : String) : LoginResponse
+    suspend fun login(username : String, password : String) : LoginResponse?
 }
