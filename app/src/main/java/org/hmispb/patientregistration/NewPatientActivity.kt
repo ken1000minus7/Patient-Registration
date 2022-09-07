@@ -6,10 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -17,10 +14,13 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import org.hmispb.patientregistration.Utils.HOSPITAL_CODE
 import org.hmispb.patientregistration.Utils.LOGIN_RESPONSE_PREF
+import org.hmispb.patientregistration.Utils.OPD_COUNTER
+import org.hmispb.patientregistration.Utils.OPD_ID
 import org.hmispb.patientregistration.Utils.USER_ID
 import org.hmispb.patientregistration.databinding.ActivityNewPatientBinding
 import org.hmispb.patientregistration.model.Data
 import org.hmispb.patientregistration.model.Patient
+import java.util.*
 
 @AndroidEntryPoint
 class NewPatientActivity : AppCompatActivity() {
@@ -34,7 +34,7 @@ class NewPatientActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         patientViewModel = ViewModelProvider(this)[PatientViewModel::class.java]
-        sharedPreferences = getSharedPreferences("opdCounter", MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(OPD_COUNTER, MODE_PRIVATE)
         hospitalAndUserIDPref = getSharedPreferences(LOGIN_RESPONSE_PREF, MODE_PRIVATE)
         val hospitalCode = hospitalAndUserIDPref.getString(HOSPITAL_CODE, "")
         val userID = hospitalAndUserIDPref.getString(USER_ID, "")
@@ -90,9 +90,27 @@ class NewPatientActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val id = sharedPreferences.getInt("id",0)
+            val dateString = sharedPreferences.getString(Utils.PREV_DATE,"")
+            val prevDate = if(dateString.isNullOrEmpty()) Date(1) else Gson().fromJson(dateString,Date::class.java)
+            val currentDate = Date()
+            if(prevDate.before(currentDate) && prevDate.day!=currentDate.day) {
+                sharedPreferences.edit()
+                    .putInt(OPD_ID,0)
+                    .putString(Utils.PREV_DATE,Gson().toJson(currentDate))
+                    .commit()
+            }
+
+            val id = sharedPreferences.getInt(OPD_ID,0)
+            var opdId = id.toString()
+            if(opdId.length==1) opdId = "0$opdId"
+            if(opdId.length==2) opdId = "0$opdId"
+
+            val crMiddle = "${if(currentDate.day<10) "0" else ""}${currentDate.day}${if(currentDate.month<10) "0" else ""}${currentDate.month}${currentDate.year.toString().substring(2)}"
+
+            val crNo = hospitalCode + crMiddle + opdId
+
             val patient = Patient(
-                id = id,
+                crNo = crNo,
                 patFirstName = binding.firstName.text.toString(),
                 patMiddleName = binding.middleName.text.toString(),
                 patLastName = binding.lastName.text.toString(),
@@ -117,20 +135,34 @@ class NewPatientActivity : AppCompatActivity() {
             )
             patientViewModel.insertPatient(patient)
             sharedPreferences.edit()
-                .putInt("id",id+1)
+                .putInt(OPD_ID,id+1)
                 .commit()
-            Toast.makeText(this, "New OPD number $id", Toast.LENGTH_SHORT).show()
-
-            try{
-                patientViewModel.savePatient(
-                    patient,
-                   hospitalCode ?: "",
-                    userID ?: ""
-                )
-            } catch (e:Exception){
-                e.printStackTrace()
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.confirmation_dialog,null,false)
+            val dialog = AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setPositiveButton("Ok"
+                ) { p0, p1 ->
+                    p0.cancel()
+                    finish()
+                }
+                .create()
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.setOnShowListener {
+                val crText : TextView? = dialog.findViewById(R.id.cr_no)
+                val opdText : TextView? = dialog.findViewById(R.id.opd_no)
+                crText?.text = crNo
+                opdText?.text = opdId
             }
-
+//            try{
+//                patientViewModel.savePatient(
+//                    patient,
+//                    hospitalCode ?: "",
+//                    userID ?: ""
+//                )
+//            } catch (e:Exception){
+//                e.printStackTrace()
+//            }
+            dialog.show()
         }
 
         patientViewModel.patientList.observe(this) { patients ->

@@ -41,4 +41,8 @@ class PatientRepositoryImpl(private val patientDao: PatientDao, private val pati
     override suspend fun login(username: String, password: String): LoginResponse? {
         return patientApi.login(LoginRequest(listOf(username, password)))
     }
+
+    override fun searchPatientByCRNumber(crNumber: String) : Patient? {
+        return patientDao.searchPatientByCRNumber(crNumber)
+    }
 }
