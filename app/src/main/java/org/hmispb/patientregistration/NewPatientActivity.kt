@@ -119,7 +119,7 @@ class NewPatientActivity : AppCompatActivity() {
             try{
                 patientViewModel.savePatient(
                     patient,
-                    LoginResponse("10001", "998", "10001", "OK")
+                    LoginResponse(dataValue = listOf())
                 )
             } catch (e:Exception){
                 e.printStackTrace()

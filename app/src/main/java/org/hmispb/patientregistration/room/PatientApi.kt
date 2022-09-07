@@ -14,8 +14,8 @@ interface PatientApi {
         @Body patientRequest: SavePatientRequest
     )
     @Headers("Content-Type:text/plain")
-    @POST("Login")
+    @POST("LoginAPI")
     suspend fun login(
         @Body loginRequest: LoginRequest
-    ) : LoginResponse
+    ) : LoginResponse?
 }
