@@ -15,9 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import org.hmispb.patientregistration.Utils.HOSPITAL_CODE
+import org.hmispb.patientregistration.Utils.LOGIN_RESPONSE_PREF
+import org.hmispb.patientregistration.Utils.USER_ID
 import org.hmispb.patientregistration.databinding.ActivityNewPatientBinding
 import org.hmispb.patientregistration.model.Data
-import org.hmispb.patientregistration.model.LoginResponse
 import org.hmispb.patientregistration.model.Patient
 
 @AndroidEntryPoint
@@ -25,6 +27,7 @@ class NewPatientActivity : AppCompatActivity() {
     private lateinit var binding : ActivityNewPatientBinding
     private lateinit var patientViewModel: PatientViewModel
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var hospitalAndUserIDPref : SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewPatientBinding.inflate(layoutInflater)
@@ -32,7 +35,9 @@ class NewPatientActivity : AppCompatActivity() {
 
         patientViewModel = ViewModelProvider(this)[PatientViewModel::class.java]
         sharedPreferences = getSharedPreferences("opdCounter", MODE_PRIVATE)
-
+        hospitalAndUserIDPref = getSharedPreferences(LOGIN_RESPONSE_PREF, MODE_PRIVATE)
+        val hospitalCode = hospitalAndUserIDPref.getString(HOSPITAL_CODE, "")
+        val userID = hospitalAndUserIDPref.getString(USER_ID, "")
         val jsonString = resources!!.openRawResource(R.raw.data).bufferedReader().use { it.readText() }
         val data = Gson().fromJson(jsonString, Data::class.java)
 
@@ -119,7 +124,8 @@ class NewPatientActivity : AppCompatActivity() {
             try{
                 patientViewModel.savePatient(
                     patient,
-                    LoginResponse(dataValue = listOf())
+                   hospitalCode ?: "",
+                    userID ?: ""
                 )
             } catch (e:Exception){
                 e.printStackTrace()

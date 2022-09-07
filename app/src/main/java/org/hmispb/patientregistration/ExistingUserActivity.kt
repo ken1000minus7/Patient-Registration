@@ -12,7 +12,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import org.hmispb.patientregistration.databinding.ActivityExistingUserBinding
-import java.util.*
 
 @AndroidEntryPoint
 class ExistingUserActivity : AppCompatActivity() {
@@ -23,12 +22,6 @@ class ExistingUserActivity : AppCompatActivity() {
         binding = ActivityExistingUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
         patientViewModel = ViewModelProvider(this)[PatientViewModel::class.java]
-        val calender = Calendar.getInstance()
-        val year = calender.get(Calendar.YEAR)
-        val month = calender.get(Calendar.MONTH)
-        val day = calender.get(Calendar.DAY_OF_MONTH)
-        binding.crNoInit.text = "$day$month$year"
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

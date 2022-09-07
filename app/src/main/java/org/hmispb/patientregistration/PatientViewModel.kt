@@ -1,7 +1,5 @@
 package org.hmispb.patientregistration
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,9 +34,9 @@ class PatientViewModel @Inject constructor(private val patientRepository: Patien
         }
     }
 
-    fun savePatient(patient: Patient, response: LoginResponse) {
+    fun savePatient(patient: Patient, hospitalCode: String, userID: String) {
         viewModelScope.launch {
-            patientRepository.savePatient(patient,response)
+            patientRepository.savePatient(patient, hospitalCode, userID)
         }
     }
 
@@ -46,10 +44,9 @@ class PatientViewModel @Inject constructor(private val patientRepository: Patien
         viewModelScope.launch {
             try {
                 val response = patientRepository.login(username,password)
-                Log.d("yellow",response.toString())
                 val patients = patientList.value ?: mutableListOf()
                 for(patient in patients) {
-                    if(response!=null) savePatient(patient,response)
+                    if(response!=null) savePatient(patient, response.dataValue!![0][0], response.dataValue[0][2])
                     deletePatient(patient)
                 }
                 uploaded.value = true
