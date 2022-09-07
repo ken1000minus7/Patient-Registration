@@ -1,7 +1,6 @@
 package org.hmispb.patientregistration
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,7 +35,7 @@ class PatientViewModel @Inject constructor(private val patientRepository: Patien
         }
     }
 
-    private fun savePatient(patient: Patient, response: LoginResponse) {
+    fun savePatient(patient: Patient, response: LoginResponse) {
         viewModelScope.launch {
             patientRepository.savePatient(patient,response)
         }
