@@ -1,6 +1,5 @@
 package org.hmispb.patientregistration
 
-import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -17,9 +16,9 @@ import org.hmispb.patientregistration.Utils.HOSPITAL_CODE
 import org.hmispb.patientregistration.Utils.LOGIN_RESPONSE_PREF
 import org.hmispb.patientregistration.Utils.OPD_COUNTER
 import org.hmispb.patientregistration.Utils.OPD_ID
+import org.hmispb.patientregistration.Utils.USER_ID
 import org.hmispb.patientregistration.databinding.ActivityNewPatientBinding
 import org.hmispb.patientregistration.model.Data
-import org.hmispb.patientregistration.model.LoginResponse
 import org.hmispb.patientregistration.model.Patient
 import java.util.*
 
@@ -28,6 +27,7 @@ class NewPatientActivity : AppCompatActivity() {
     private lateinit var binding : ActivityNewPatientBinding
     private lateinit var patientViewModel: PatientViewModel
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var hospitalAndUserIDPref : SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewPatientBinding.inflate(layoutInflater)
@@ -35,7 +35,9 @@ class NewPatientActivity : AppCompatActivity() {
 
         patientViewModel = ViewModelProvider(this)[PatientViewModel::class.java]
         sharedPreferences = getSharedPreferences(OPD_COUNTER, MODE_PRIVATE)
-        val loginPreferences = getSharedPreferences(LOGIN_RESPONSE_PREF, MODE_PRIVATE)
+        hospitalAndUserIDPref = getSharedPreferences(LOGIN_RESPONSE_PREF, MODE_PRIVATE)
+        val hospitalCode = hospitalAndUserIDPref.getString(HOSPITAL_CODE, "")
+        val userID = hospitalAndUserIDPref.getString(USER_ID, "")
 
         val jsonString = resources!!.openRawResource(R.raw.data).bufferedReader().use { it.readText() }
         val data = Gson().fromJson(jsonString, Data::class.java)
@@ -104,10 +106,9 @@ class NewPatientActivity : AppCompatActivity() {
             if(opdId.length==1) opdId = "0$opdId"
             if(opdId.length==2) opdId = "0$opdId"
 
-            val crStarting = sharedPreferences.getString(HOSPITAL_CODE,"")
             val crMiddle = "${if(currentDate.day<10) "0" else ""}${currentDate.day}${if(currentDate.month<10) "0" else ""}${currentDate.month}${currentDate.year.toString().substring(2)}"
 
-            val crNo = crStarting + crMiddle + opdId
+            val crNo = hospitalCode + crMiddle + opdId
 
             val patient = Patient(
                 crNo = crNo,
@@ -154,14 +155,15 @@ class NewPatientActivity : AppCompatActivity() {
                 opdText?.text = opdId
 
             }
-            try{
-                patientViewModel.savePatient(
-                    patient,
-                    LoginResponse(dataValue = listOf())
-                )
-            } catch (e:Exception){
-                e.printStackTrace()
-            }
+//            try{
+//                patientViewModel.savePatient(
+//                    patient,
+//                    hospitalCode ?: "",
+//                    userID ?: ""
+//                )
+//            } catch (e:Exception){
+//                e.printStackTrace()
+//            }
             dialog.show()
         }
 

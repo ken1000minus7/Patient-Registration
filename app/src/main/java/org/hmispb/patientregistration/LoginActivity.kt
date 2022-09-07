@@ -20,24 +20,27 @@ import org.hmispb.patientregistration.databinding.ActivityLoginBinding
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var sharedPref : SharedPreferences
+    private lateinit var sharedPref: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedPref = this.getSharedPreferences(
             LOGIN_RESPONSE_PREF,
             Context.MODE_PRIVATE
         )
-        if (sharedPref.contains(HOSPITAL_CODE)){
-            startActivity(Intent(this,MainActivity::class.java))
+        if (sharedPref.contains(HOSPITAL_CODE)) {
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val viewModel : PatientViewModel by viewModels()
+        val viewModel: PatientViewModel by viewModels()
         binding.btnSubmit.setOnClickListener {
-            lifecycleScope.launch{
-              val response =   viewModel.login(binding.userName.text.toString(), binding.passWord.text.toString())
-                if (response?.dataValue == null){
+            lifecycleScope.launch {
+                val response = viewModel.login(
+                    binding.userName.text.toString(),
+                    binding.passWord.text.toString()
+                )
+                if (response?.dataValue == null) {
                     Toast.makeText(
                         this@LoginActivity,
                         "Incorrect Username/ Password",
@@ -54,7 +57,6 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
             }
-
         }
     }
 }
