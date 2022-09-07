@@ -9,7 +9,4 @@ object Utils {
     const val HOSPITAL_NAME = "hospitalName"
     const val USER_ID = "userId"
     const val USERNAME = "UserName"
-    const val OPD_COUNTER = "opd_counter"
-    const val OPD_ID = "opd_id"
-    const val PREV_DATE = "prev_date"
 }
