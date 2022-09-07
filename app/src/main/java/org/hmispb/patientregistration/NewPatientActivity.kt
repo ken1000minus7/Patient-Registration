@@ -17,6 +17,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import org.hmispb.patientregistration.databinding.ActivityNewPatientBinding
 import org.hmispb.patientregistration.model.Data
+import org.hmispb.patientregistration.model.LoginResponse
 import org.hmispb.patientregistration.model.Patient
 
 @AndroidEntryPoint
@@ -114,6 +115,15 @@ class NewPatientActivity : AppCompatActivity() {
                 .putInt("id",id+1)
                 .commit()
             Toast.makeText(this, "New OPD number $id", Toast.LENGTH_SHORT).show()
+
+            try{
+                patientViewModel.savePatient(
+                    patient,
+                    LoginResponse("10001", "998", "10001", "OK")
+                )
+            } catch (e:Exception){
+                e.printStackTrace()
+            }
 
         }
 
