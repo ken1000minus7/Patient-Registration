@@ -21,6 +21,9 @@ interface PatientDao {
     @Query("DELETE FROM patient")
     suspend fun deleteAllPatients()
 
+    @Query("SELECT * FROM patient WHERE crNo =:crNumber")
+    suspend  fun searchPatientByCRNumber(crNumber: String) : Patient?
+
     @Query("UPDATE patient SET isUploaded=1 WHERE crNo=:crNo")
     suspend fun setUploaded(crNo : String)
 
