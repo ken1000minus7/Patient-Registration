@@ -4,8 +4,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -95,12 +93,12 @@ class NewPatientActivity : AppCompatActivity() {
             val currentDate = Date()
             if(prevDate.before(currentDate) && prevDate.day!=currentDate.day) {
                 sharedPreferences.edit()
-                    .putInt(OPD_ID,0)
+                    .putInt(OPD_ID,1)
                     .putString(Utils.PREV_DATE,Gson().toJson(currentDate))
                     .commit()
             }
 
-            val id = sharedPreferences.getInt(OPD_ID,0)
+            val id = sharedPreferences.getInt(OPD_ID,1)
             var opdId = id.toString()
             if(opdId.length==1) opdId = "0$opdId"
             if(opdId.length==2) opdId = "0$opdId"
@@ -156,15 +154,6 @@ class NewPatientActivity : AppCompatActivity() {
                 crText?.text = crNo
                 opdText?.text = opdId
             }
-//            try{
-//                patientViewModel.savePatient(
-//                    patient,
-//                    hospitalCode ?: "",
-//                    userID ?: ""
-//                )
-//            } catch (e:Exception){
-//                e.printStackTrace()
-//            }
             dialog.show()
         }
 
