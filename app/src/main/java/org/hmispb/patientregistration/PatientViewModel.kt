@@ -15,10 +15,10 @@ import javax.inject.Inject
 @HiltViewModel
 class PatientViewModel @Inject constructor(private val patientRepository: PatientRepository) : ViewModel() {
     var patientList = patientRepository.getAllPatients()
-    var uploaded : MutableLiveData<Boolean> = MutableLiveData(false)
+    var uploaded: MutableLiveData<Boolean> = MutableLiveData(false)
 
     init {
-        Log.d("poppy",patientList.value.toString())
+        Log.d("poppy", patientList.value.toString())
     }
 
     fun insertPatient(patient: Patient) {
@@ -45,38 +45,47 @@ class PatientViewModel @Inject constructor(private val patientRepository: Patien
         }
     }
 
-    private fun setUploaded(crNo : String) {
+    private fun setUploaded(crNo: String) {
         viewModelScope.launch(Dispatchers.IO) {
             patientRepository.setUploaded(crNo)
         }
     }
 
-    fun upload(username : String, password : String,patients : List<Patient>) {
+    fun upload(username: String, password: String, patients: List<Patient>) {
         viewModelScope.launch {
             try {
-                val response = login(username,password)
-                for(patient in patients) {
-                    Log.d("pop",patient.toString())
-                    if(response!=null && !patient.isUploaded) {
+                val response = login(username, password)
+                for (patient in patients) {
+                    Log.d("pop", patient.toString())
+                    if (response != null && !patient.isUploaded) {
                         try {
-                            savePatient(patient, response.dataValue!![0][0], response.dataValue[0][2])
+                            savePatient(
+                                patient,
+                                response.dataValue!![0][0],
+                                response.dataValue[0][2]
+                            )
                             setUploaded(patient.crNo)
-                        } catch (e : Exception) {
+                        } catch (e: Exception) {
                             e.printStackTrace()
                         }
                     }
                 }
                 uploaded.postValue(true)
-            } catch (e : Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    suspend fun login(username : String, password : String) : LoginResponse? =
+    suspend fun searchPatientByCRNumber(crNumber: String): Boolean {
+        val person: Patient? = patientRepository.searchPatientByCRNumber(crNumber)
+        return (person != null)
+    }
+
+    suspend fun login(username: String, password: String): LoginResponse? =
         patientRepository.login(username, password)
 
-    suspend fun containsNotUploaded() : Boolean {
+    suspend fun containsNotUploaded(): Boolean {
         return patientRepository.containsNotUploaded()
     }
 }
