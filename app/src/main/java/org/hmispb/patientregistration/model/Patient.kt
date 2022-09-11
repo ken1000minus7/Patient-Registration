@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Patient(
     @PrimaryKey
-    val crNo : String,
+    var crNo : String,
     val patFirstName : String,
     val patMiddleName : String,
     val patLastName : String,
@@ -20,5 +20,6 @@ data class Patient(
     val patAddCountryCodeId : Int,
     val patAddStateCodeId : Int,
     val patAddMobileNo : Long,
-    var isUploaded : Boolean = false
+    var isUploaded : Boolean = false,
+    val oldCrs : MutableList<String> = mutableListOf()
 )

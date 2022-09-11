@@ -27,12 +27,6 @@ class PatientViewModel @Inject constructor(private val patientRepository: Patien
         }
     }
 
-    private fun deletePatient(patient: Patient) {
-        viewModelScope.launch(Dispatchers.IO) {
-            patientRepository.deletePatient(patient)
-        }
-    }
-
     fun deleteAllPatients() {
         viewModelScope.launch(Dispatchers.IO) {
             patientRepository.deleteAllPatients()
@@ -77,9 +71,12 @@ class PatientViewModel @Inject constructor(private val patientRepository: Patien
         }
     }
 
-    suspend fun searchPatientByCRNumber(crNumber: String): Boolean {
-        val person: Patient? = patientRepository.searchPatientByCRNumber(crNumber)
-        return (person != null)
+    suspend fun deletePatient(crNo: String) {
+        patientRepository.deletePatient(crNo)
+    }
+
+    suspend fun searchPatientByCRNumber(crNumber: String): Patient? {
+        return patientRepository.searchPatientByCRNumber(crNumber)
     }
 
     suspend fun login(username: String, password: String): LoginResponse? =

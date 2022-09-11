@@ -3,6 +3,7 @@ package org.hmispb.patientregistration
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.TextView
 import android.widget.Toast
@@ -31,7 +32,9 @@ class ExistingUserActivity : AppCompatActivity() {
 
         binding.btnSubmit.setOnClickListener {
             lifecycleScope.launch  {
-                if (patientViewModel.searchPatientByCRNumber(binding.crno.text.toString())) {
+                val oldCr = binding.crno.text.toString()
+                val patient = patientViewModel.searchPatientByCRNumber(oldCr)
+                if (patient != null) {
                     val dateString = sharedPreferences.getString(Utils.PREV_DATE,"")
                     val prevDate = if(dateString.isNullOrEmpty()) Date(1) else Gson().fromJson(dateString,
                         Date::class.java)
@@ -66,6 +69,10 @@ class ExistingUserActivity : AppCompatActivity() {
                             finish()
                         }
                         .create()
+                    patient.crNo = newCr
+                    patient.oldCrs.add(oldCr)
+                    patientViewModel.deletePatient(oldCr)
+                    patientViewModel.insertPatient(patient)
                     dialog.setCanceledOnTouchOutside(false)
                     dialog.setOnShowListener {
                         val crNo : TextView? = dialog.findViewById(R.id.new_cr_no)
@@ -78,6 +85,9 @@ class ExistingUserActivity : AppCompatActivity() {
                     Toast.makeText(this@ExistingUserActivity, "Wrong CR number", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+        patientViewModel.patientList.observe(this) {
+            Log.d("hehehe",it.toString())
         }
     }
 }

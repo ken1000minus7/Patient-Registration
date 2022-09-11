@@ -9,7 +9,7 @@ interface PatientRepository {
 
     fun getAllPatients() : LiveData<List<Patient>>
 
-    suspend fun deletePatient(patient: Patient)
+    suspend fun deletePatient(crNo: String)
 
     suspend fun deleteAllPatients()
 

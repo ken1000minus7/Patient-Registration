@@ -18,8 +18,8 @@ class PatientRepositoryImpl(private val patientDao: PatientDao, private val pati
         return patientDao.getAllPatients()
     }
 
-    override suspend fun deletePatient(patient: Patient) {
-        patientDao.deletePatient(patient)
+    override suspend fun deletePatient(crNo: String) {
+        patientDao.deletePatient(crNo)
     }
 
     override suspend fun deleteAllPatients() {
