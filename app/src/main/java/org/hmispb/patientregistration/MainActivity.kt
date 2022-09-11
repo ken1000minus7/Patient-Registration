@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                     val pat = it.find { pat ->
                         !pat.isUploaded
                     }
-                    if (pat!=null) {
+                    if (pat==null) {
                         Toast.makeText(
                             this@MainActivity,
                             "Data successfully uploaded",
