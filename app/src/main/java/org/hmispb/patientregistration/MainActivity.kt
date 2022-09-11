@@ -11,9 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import org.hmispb.patientregistration.databinding.ActivityMainBinding
 
 @AndroidEntryPoint
@@ -66,12 +64,21 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             patientViewModel.uploaded.observe(this@MainActivity) { uploaded ->
-                lifecycleScope.launch {
-                    if(uploaded) {
-                        Toast.makeText(this@MainActivity,if(patientViewModel.containsNotUploaded()) "One or more entries were not uploaded" else "Data successfully uploaded", Toast.LENGTH_SHORT).show()
-                        dialogInterface.cancel()
-                        patientViewModel.uploaded.postValue(false)
+                if(!uploaded)
+                    return@observe
+                patientViewModel.patientList.observe(this) {
+                    val pat = it.find { pat ->
+                        !pat.isUploaded
                     }
+                    if (pat!=null) {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Data successfully uploaded",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        dialogInterface.cancel()
+                    }
+                    patientViewModel.uploaded.postValue(false)
                 }
             }
         }
