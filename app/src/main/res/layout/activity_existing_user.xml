@@ -51,10 +51,8 @@
             android:layout_height="match_parent"
             android:ems="10"
             android:inputType="number"
-            android:maxLength="3"
             android:textSize="@dimen/_15ssp"
-            android:padding="10dp"
-            android:textAlignment="center" />
+            android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
