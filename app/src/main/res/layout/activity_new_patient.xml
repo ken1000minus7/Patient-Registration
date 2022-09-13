@@ -139,6 +139,7 @@
                         android:id="@+id/age"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:maxLength="3"
                         android:ems="10"
                         android:inputType="number"
                         android:padding="10dp" />
@@ -399,7 +400,10 @@
                     android:id="@+id/number"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:digits="0123456789+"
                     android:ems="10"
+
+                    android:maxLength="10"
                     android:inputType="phone"
                     android:padding="10dp" />
             </com.google.android.material.textfield.TextInputLayout>

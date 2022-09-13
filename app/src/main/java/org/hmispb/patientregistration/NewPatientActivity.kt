@@ -2,11 +2,13 @@ package org.hmispb.patientregistration
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.telephony.PhoneNumberUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +40,6 @@ class NewPatientActivity : AppCompatActivity() {
         val userID = hospitalAndUserIDPref.getString(USER_ID, "")
         val jsonString = resources!!.openRawResource(R.raw.data).bufferedReader().use { it.readText() }
         val data = Gson().fromJson(jsonString, Data::class.java)
-
         val ageUnits = arrayOf("Years","Months","Weeks","Days")
         val ageAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,ageUnits)
         binding.ageUnits.adapter = ageAdapter
@@ -66,7 +67,8 @@ class NewPatientActivity : AppCompatActivity() {
                 binding.genderRadioGroup.checkedRadioButtonId==-1 ||
                 binding.street.text.isNullOrEmpty() ||
                 binding.city.text.isNullOrEmpty() ||
-                binding.number.text.isNullOrEmpty()
+                binding.number.text.isNullOrEmpty() ||
+                        binding.number.text.toString().length<10
             ) {
                 if(binding.firstName.text.isNullOrEmpty())
                     binding.firstName.error = "Required"
@@ -83,7 +85,11 @@ class NewPatientActivity : AppCompatActivity() {
                 if(binding.number.text.isNullOrEmpty())
                     binding.number.error = "Required"
 
-                Toast.makeText(this@NewPatientActivity,"One or more fields are empty",Toast.LENGTH_SHORT).show()
+                if(binding.number.text.toString().length<10){
+                    binding.number.error = "Phone number not valid"
+                }
+
+                Toast.makeText(this@NewPatientActivity,"One or more fields are empty or incorrect",Toast.LENGTH_SHORT).show()
 
                 return@setOnClickListener
             }
@@ -132,7 +138,7 @@ class NewPatientActivity : AppCompatActivity() {
                 patMotherName = binding.mother.text.toString(),
                 patAddCountryCodeId = data.country[binding.countries.selectedItemPosition].countryCode,
                 patAddStateCodeId = data.state[binding.states.selectedItemPosition].stateCode,
-                patAddMobileNo = java.lang.Long.parseLong(binding.number.text.toString())
+                patAddMobileNo = binding.number.text.toString().toLong()
             )
             patientViewModel.insertPatient(patient)
             sharedPreferences.edit()

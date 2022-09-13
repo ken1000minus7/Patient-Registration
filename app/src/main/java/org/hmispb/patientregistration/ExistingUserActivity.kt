@@ -30,7 +30,24 @@ class ExistingUserActivity : AppCompatActivity() {
         patientViewModel = ViewModelProvider(this)[PatientViewModel::class.java]
         val loginPreferences = getSharedPreferences(Utils.LOGIN_RESPONSE_PREF, MODE_PRIVATE)
 
+        binding.btnSearch.setOnClickListener {
+            lifecycleScope.launch{
+                val oldCr = binding.crno.text.toString()
+                val patient = patientViewModel.searchPatientByCRNumber(oldCr)
+                if (patient!=null) {
+                    binding.name.text = patient.patFirstName + " "+ patient.patMiddleName + " "+ patient.patLastName
+                    binding.mobNum.text = patient.patAddMobileNo.toString()
+                } else {
+                    Toast.makeText(this@ExistingUserActivity, "Wrong CR number", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         binding.btnSubmit.setOnClickListener {
+            if (binding.name.text.isEmpty()){
+                Toast.makeText(this, "Please Enter CR number", Toast.LENGTH_SHORT).show()
+            }
+            else {
             lifecycleScope.launch  {
                 val oldCr = binding.crno.text.toString()
                 val patient = patientViewModel.searchPatientByCRNumber(oldCr)
@@ -77,6 +94,7 @@ class ExistingUserActivity : AppCompatActivity() {
                     dialog.setOnShowListener {
                         val crNo : TextView? = dialog.findViewById(R.id.new_cr_no)
                         val opdText: TextView? = dialog.findViewById(R.id.new_opd_no)
+
                         crNo?.text = newCr
                         opdText?.text = opdId
                     }
@@ -85,6 +103,7 @@ class ExistingUserActivity : AppCompatActivity() {
                     Toast.makeText(this@ExistingUserActivity, "Wrong CR number", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
         }
         patientViewModel.patientList.observe(this) {
             Log.d("hehehe",it.toString())
