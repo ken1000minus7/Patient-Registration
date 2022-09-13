@@ -33,12 +33,21 @@ class ExistingUserActivity : AppCompatActivity() {
         binding.btnSearch.setOnClickListener {
             lifecycleScope.launch{
                 val oldCr = binding.crno.text.toString()
-                val patient = patientViewModel.searchPatientByCRNumber(oldCr)
-                if (patient!=null) {
-                    binding.name.text = patient.patFirstName + " "+ patient.patMiddleName + " "+ patient.patLastName
-                    binding.mobNum.text = patient.patAddMobileNo.toString()
-                } else {
+                 var patient = patientViewModel.searchPatientByCRNumber(oldCr)
+                patientViewModel.patientList.observe(this@ExistingUserActivity){
+                    if (patient==null){
+                        patient = it.find { patient->
+                            patient.oldCrs.contains(oldCr)
+                        }
+                    }
+                }
+
+                if (patient==null) {
                     Toast.makeText(this@ExistingUserActivity, "Wrong CR number", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    binding.name.text = patient!!.patFirstName + " "+ patient!!.patMiddleName + " "+ patient!!.patLastName
+                    binding.mobNum.text = patient!!.patAddMobileNo.toString()
                 }
             }
         }
