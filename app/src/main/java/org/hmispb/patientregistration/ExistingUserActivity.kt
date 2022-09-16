@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -14,6 +15,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.hmispb.patientregistration.databinding.ActivityExistingUserBinding
+import java.lang.Exception
 import java.util.*
 
 @AndroidEntryPoint
@@ -25,6 +27,8 @@ class ExistingUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityExistingUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        try { supportActionBar?.setDisplayHomeAsUpEnabled(true) } catch (e : Exception){}
 
         sharedPreferences = getSharedPreferences(Utils.OPD_COUNTER, MODE_PRIVATE)
         patientViewModel = ViewModelProvider(this)[PatientViewModel::class.java]
@@ -117,5 +121,12 @@ class ExistingUserActivity : AppCompatActivity() {
         patientViewModel.patientList.observe(this) {
             Log.d("hehehe",it.toString())
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId== android.R.id.home){
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
